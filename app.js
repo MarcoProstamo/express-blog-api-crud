@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 
 const path = require("path");
-const postRouter = require(path.join(__dirname, "router", "posts.js"));
+const postRouter = require(path.join(__dirname, "routers", "posts.js"));
 
 app.use("/posts", postRouter);
 

@@ -1,16 +1,10 @@
-const path = require("path");
-const posts = require(path.join("../db", "posts.js"));
+const posts = require("../db/posts");
 
-const express = require("express");
-const router = express.Router();
-
-// Index
-router.get("/", (req, res) => {
+function index(req, res) {
   res.json(posts);
-});
+}
 
-// Show
-router.get("/:id", (req, res) => {
+function show(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -22,15 +16,13 @@ router.get("/:id", (req, res) => {
     return;
   }
   res.json(selectedPost);
-});
+}
 
-// Create
-router.post("/", (req, res) => {
+function create(req, res) {
   res.json("Post Creato");
-});
+}
 
-// Update
-router.put("/:id", (req, res) => {
+function update(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -42,10 +34,9 @@ router.put("/:id", (req, res) => {
     return;
   }
   res.json(`Post con ID: ${id} → Sostituito`);
-});
+}
 
-// Modify
-router.patch("/:id", (req, res) => {
+function modify(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -57,10 +48,9 @@ router.patch("/:id", (req, res) => {
     return;
   }
   res.json(`Post con ID: ${id} → Modificato`);
-});
+}
 
-// Destroy
-router.delete("/:id", (req, res) => {
+function destroy(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -77,10 +67,9 @@ router.delete("/:id", (req, res) => {
     return;
   }
 
-  const postEliminato = posts[selectedPostIndex];
-  posts.slice(selectedPostIndex, 1);
+  posts.splice(selectedPostIndex, 1);
+  console.log(posts);
+  res.sendStatus(204);
+}
 
-  res.json({ postEliminato, posts });
-});
-
-module.exports = router;
+module.exports = { index, show, create, update, modify, destroy };
