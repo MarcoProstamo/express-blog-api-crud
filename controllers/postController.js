@@ -25,8 +25,14 @@ function show(req, res) {
 }
 
 function create(req, res) {
-  const newPost = req.body;
+  const newPost = {
+    titolo: req.body.titolo,
+    contenuto: req.body.contenuto,
+    immagine: req.body.immagine,
+    tags: req.body.tags,
+  };
   newPost.id = 42; // Fixed Value for the Exercise
+
   if (!newPost.titolo) return res.status(400).json({ error: "Invalid Title" });
   if (!newPost.contenuto)
     return res.status(400).json({ error: "Invalid Content" });
@@ -34,12 +40,19 @@ function create(req, res) {
     return res.status(400).json({ error: "Invalid Image" });
   if (!newPost.tags?.length)
     return res.status(400).json({ error: "Invalid Tags" });
-  posts.push(newPost);
 
+  posts.push(newPost);
   res.sendStatus(201);
 }
 
 function update(req, res) {
+  const newPost = {
+    titolo: req.body.titolo,
+    contenuto: req.body.contenuto,
+    immagine: req.body.immagine,
+    tags: req.body.tags,
+  };
+
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -50,6 +63,22 @@ function update(req, res) {
     res.status(404).json({ error: "Post Not Found" });
     return;
   }
+
+  if (!newPost.titolo) return res.status(400).json({ error: "Invalid Title" });
+  if (!newPost.contenuto)
+    return res.status(400).json({ error: "Invalid Content" });
+  if (!newPost.immagine)
+    return res.status(400).json({ error: "Invalid Image" });
+  if (!newPost.tags?.length)
+    return res.status(400).json({ error: "Invalid Tags" });
+
+  selectedPost.titolo = newPost.titolo;
+  selectedPost.contenuto = newPost.contenuto;
+  selectedPost.immagine = newPost.immagine;
+  selectedPost.tags = newPost.tags;
+
+  console.log(posts);
+
   res.json(`Post con ID: ${id} → Sostituito`);
 }
 
