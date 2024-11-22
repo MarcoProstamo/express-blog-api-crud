@@ -83,6 +83,13 @@ function update(req, res) {
 }
 
 function modify(req, res) {
+  const newPost = {
+    titolo: req.body.titolo,
+    contenuto: req.body.contenuto,
+    immagine: req.body.immagine,
+    tags: req.body.tags,
+  };
+
   id = parseInt(req.params.id);
   if (isNaN(id)) {
     res.status(406).json({ error: "Id Not Valid" });
@@ -93,6 +100,13 @@ function modify(req, res) {
     res.status(404).json({ error: "Post Not Found" });
     return;
   }
+
+  if (newPost.titolo) selectedPost.titolo = newPost.titolo;
+  if (newPost.contenuto) selectedPost.contenuto = newPost.contenuto;
+  if (newPost.immagine) selectedPost.immagine = newPost.immagine;
+  if (newPost.tags?.length) selectedPost.tags = newPost.tags;
+
+  console.log(posts);
   res.json(`Post con ID: ${id} → Modificato`);
 }
 
