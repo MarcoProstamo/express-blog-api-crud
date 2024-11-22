@@ -25,7 +25,12 @@ function show(req, res) {
 }
 
 function create(req, res) {
-  res.json("Post Creato");
+  const newPost = req.body;
+  newPost.id = 42; // Fixed Value for the Exercise
+
+  posts.push(newPost);
+
+  res.sendStatus(201);
 }
 
 function update(req, res) {
