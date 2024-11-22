@@ -27,7 +27,13 @@ function show(req, res) {
 function create(req, res) {
   const newPost = req.body;
   newPost.id = 42; // Fixed Value for the Exercise
-
+  if (!newPost.titolo) return res.status(400).json({ error: "Invalid Title" });
+  if (!newPost.contenuto)
+    return res.status(400).json({ error: "Invalid Content" });
+  if (!newPost.immagine)
+    return res.status(400).json({ error: "Invalid Image" });
+  if (!newPost.tags?.length)
+    return res.status(400).json({ error: "Invalid Tags" });
   posts.push(newPost);
 
   res.sendStatus(201);
