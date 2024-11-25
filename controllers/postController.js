@@ -13,14 +13,15 @@ function index(req, res) {
 function show(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
-    const err = new Error("Id not Valid");
+    const err = new Error("Invalid ID");
     err.status = 400;
     throw err;
   }
   const selectedPost = posts.find((post) => post.id === id);
   if (!selectedPost) {
-    res.status(404).json({ error: "Post Not Found" });
-    return;
+    const err = new Error("Post Not Found");
+    err.status = 404;
+    throw err;
   }
   res.json(selectedPost);
 }
@@ -34,13 +35,26 @@ function create(req, res) {
   };
   newPost.id = 42; // Fixed Value for the Exercise
 
-  if (!newPost.titolo) return res.status(400).json({ error: "Invalid Title" });
-  if (!newPost.contenuto)
-    return res.status(400).json({ error: "Invalid Content" });
-  if (!newPost.immagine)
-    return res.status(400).json({ error: "Invalid Image" });
-  if (!newPost.tags?.length)
-    return res.status(400).json({ error: "Invalid Tags" });
+  if (!newPost.titolo) {
+    const err = new Error("Invalid Title");
+    err.status = 400;
+    throw err;
+  }
+  if (!newPost.contenuto) {
+    const err = new Error("Invalid Content");
+    err.status = 400;
+    throw err;
+  }
+  if (!newPost.immagine) {
+    const err = new Error("Invalid Image");
+    err.status = 400;
+    throw err;
+  }
+  if (!newPost.tags?.length) {
+    const err = new Error("Invalid Tags");
+    err.status = 400;
+    throw err;
+  }
 
   posts.push(newPost);
   res.sendStatus(201);
@@ -56,13 +70,15 @@ function update(req, res) {
 
   id = parseInt(req.params.id);
   if (isNaN(id)) {
-    res.status(406).json({ error: "Id Not Valid" });
-    return;
+    const err = new Error("Invalid ID");
+    err.status = 400;
+    throw err;
   }
   const selectedPost = posts.find((post) => post.id === id);
   if (!selectedPost) {
-    res.status(404).json({ error: "Post Not Found" });
-    return;
+    const err = new Error("Post Not Found");
+    err.status = 404;
+    throw err;
   }
 
   if (!newPost.titolo) return res.status(400).json({ error: "Invalid Title" });
@@ -93,13 +109,15 @@ function modify(req, res) {
 
   id = parseInt(req.params.id);
   if (isNaN(id)) {
-    res.status(406).json({ error: "Id Not Valid" });
-    return;
+    const err = new Error("Invalid ID");
+    err.status = 400;
+    throw err;
   }
   const selectedPost = posts.find((post) => post.id === id);
   if (!selectedPost) {
-    res.status(404).json({ error: "Post Not Found" });
-    return;
+    const err = new Error("Post Not Found");
+    err.status = 404;
+    throw err;
   }
 
   if (newPost.titolo) selectedPost.titolo = newPost.titolo;
@@ -114,8 +132,9 @@ function modify(req, res) {
 function destroy(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
-    res.status(406).json({ error: "Id Not Valid" });
-    return;
+    const err = new Error("Invalid ID");
+    err.status = 400;
+    throw err;
   }
 
   let selectedPostIndex;
@@ -124,8 +143,9 @@ function destroy(req, res) {
   });
 
   if (!posts.find((post) => post.id === id)) {
-    res.status(404).json({ error: "Post Not Found" });
-    return;
+    const err = new Error("Post Not Found");
+    err.status = 404;
+    throw err;
   }
 
   posts.splice(selectedPostIndex, 1);
