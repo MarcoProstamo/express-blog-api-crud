@@ -13,8 +13,9 @@ function index(req, res) {
 function show(req, res) {
   id = parseInt(req.params.id);
   if (isNaN(id)) {
-    res.status(406).json({ error: "Id Not Valid" });
-    return;
+    const err = new Error("Id not Valid");
+    err.status = 400;
+    throw err;
   }
   const selectedPost = posts.find((post) => post.id === id);
   if (!selectedPost) {
